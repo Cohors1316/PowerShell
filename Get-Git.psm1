@@ -5,7 +5,7 @@ Function Get-Git.psm1 {
         $Dir,
         $Token
     )
-    $GitHub = "https://api.github.comm/repos/$Or/$Repo/contents/$Dir"
+    $GitHub = "https://api.github.comm/repos/$Org/$Repo/contents/$Dir"
     $Rest = @{
         Uri = $GitHub
         Method = 'Get'
