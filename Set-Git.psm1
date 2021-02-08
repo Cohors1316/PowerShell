@@ -1,4 +1,4 @@
-Function Get-Git.psm1 {
+Function Get-Git {
     Param (
         $Org,
         Repo,
