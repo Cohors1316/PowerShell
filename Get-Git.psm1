@@ -1,7 +1,7 @@
 Function Get-Git {
     Param (
         $Org,
-        Repo,
+        $Repo,
         $Dir,
         $Token
     )
