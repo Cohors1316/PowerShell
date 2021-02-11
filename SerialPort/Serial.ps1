@@ -98,7 +98,7 @@ Function Send-Command {
 
         $Output = New-Object -TypeName PSObject -Property @{
             Port = $Port
-            Line = $Receive
+            Line = $Line
             Result = If ($Line -Match $Expect) {$True} Else {$False}
         }
 
