@@ -56,7 +56,9 @@ Function Get-SerialPort {
         To do
     
     #>
+
 }
+
 Function Send-Command {
     [CmdletBinding()]
 
@@ -134,4 +136,5 @@ Function Send-Command {
         .FUNCTIONALITY
         To do
     #>
+
 }
