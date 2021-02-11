@@ -5,20 +5,21 @@ Function Get-SerialPort {
 
         # Filter by Name
         [Parameter()]
-        [String]$Name,
+        [String]$Name = $Null,
 
         # Filter by service type
         [Parameter()]
-        [ValidateSet('usbser')]
-        [String]$Service
+        [ValidateSet('usbser','FTSER2K','Ser2pl','Serial',$Null)]
+        [String]$Service = $Null
 
     )
 
     Process {
 
-        $Port = (Get-PnPDevice).Where({$_.Present -Eq $True -And $_.Class -Eq 'Ports'})
-        $Port = $Port.Where({$_.Name -Match $Name -And $_.Service -Eq $Service})
-
+        $Port = (Get-PnPDevice).Where({$_.Status -Eq 'OK' -And $_.Class -Eq 'Ports'})
+        If ($Name -NE '') {Write-Host 'Name';$Port = $Port.Where({$_.Name -Match $FriendlyName})}
+        If ($Service -NE '') {Write-Host 'Service';$Port = $Port.Where({$_.Service -Eq $Service})}
+        
         $Port = New-Object -TypeName System.IO.Ports.SerialPort -Property @{
             PortName = ([RegEx]'COM\d+').Match($Port.FriendlyName).Value
         }
