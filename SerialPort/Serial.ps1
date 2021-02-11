@@ -78,16 +78,13 @@ Function Send-Command {
         [System.IO.Port.SerialPort]$Port,
 
         # Disable sending NewLine with command
-        [Switch]$NoNewLine,
-        
-        # Hide output
-        [Switch]$Silent
+        [Switch]$NoNewLine
 
     )
 
     Process {
 
-        If (-Not ($Silent.IsPresent)) {Write-Host -Object $Send -NoNewline -ForegroundColor Gray}
+        Write-Host -Object $Send -NoNewline -ForegroundColor Gray
 
         $Port.Open()
 
@@ -106,7 +103,7 @@ Function Send-Command {
         }
 
         $Color = If ($Output.Result -Eq $False) {'Red'} Else {'White'}
-        If (-Not ($Silent.IsPresent)) {Write-Host -Object $Line -ForegroundColor $Color}
+        Write-Host -Object $Line -ForegroundColor $Color
 
         Write-Output -InputObject $Output
 
