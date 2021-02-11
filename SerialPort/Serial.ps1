@@ -108,7 +108,7 @@ Function Send-Command {
         $Color = If ($Output.Result -Eq $False) {'Red'} Else {'White'}
         If (-Not ($Silent.IsPresent)) {Write-Host -Object $Line -ForegroundColor $Color}
 
-        Write-Output -InputObject $Output
+        If ($Output.Result -Eq $True) {Write-Output -InputObject $Output}
 
     }
 
