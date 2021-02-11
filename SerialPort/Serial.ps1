@@ -17,8 +17,8 @@ Function Get-SerialPort {
     Process {
 
         $Port = (Get-PnPDevice).Where({$_.Status -Eq 'OK' -And $_.Class -Eq 'Ports'})
-        If ($Name -NE '') {Write-Host 'Name';$Port = $Port.Where({$_.Name -Match $FriendlyName})}
-        If ($Service -NE '') {Write-Host 'Service';$Port = $Port.Where({$_.Service -Eq $Service})}
+        If ($Name -NE '') {$Port = $Port.Where({$_.Name -Match $FriendlyName})}
+        If ($Service -NE '') {$Port = $Port.Where({$_.Service -Eq $Service})}
         
         $Port = New-Object -TypeName System.IO.Ports.SerialPort -Property @{
             PortName = ([RegEx]'COM\d+').Match($Port.FriendlyName).Value
