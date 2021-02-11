@@ -75,7 +75,7 @@ Function Send-Command {
 
         # Port object, see Get-SerialPort
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [System.IO.Port.SerialPort]$Port,
+        [System.IO.Ports.SerialPort]$Port,
 
         # Disable sending NewLine with command
         [Switch]$NoNewLine
