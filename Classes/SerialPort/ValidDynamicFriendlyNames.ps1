@@ -1,4 +1,4 @@
-Class ValidFriendlyNames : System.Management.Automation.IValidateSetValuesGenerator {
+Class ValidDynamicFriendlyNames : System.Management.Automation.IValidateSetValuesGenerator {
     [String[]] GetValidValues() {
         $FriendlyNames =  (Get-PnPDevice).Where({$_.Class -Eq 'Ports'}).FriendlyName
         $Array = [System.Collections.Generic.List[String]]::New()
