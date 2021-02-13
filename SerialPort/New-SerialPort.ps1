@@ -94,6 +94,7 @@ Function New-SerialPort {
         }
 
         $Port = New-Object -TypeName System.IO.Ports.SerialPort -Property @{
+
             PortName = $PortName
             BaudRate = $BaudRate
             Parity = $Parity
@@ -103,6 +104,7 @@ Function New-SerialPort {
             ReadTimeout = $ReadTimeout
             DtrEnable = If ($DtrEnable.IsPresent) {$True} Else {$False}
             RtsEnable = If ($RtsEnable.IsPresent) {$True} Else {$False}
+
         }
 
         Write-Output -InputObject $Port
