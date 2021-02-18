@@ -69,10 +69,10 @@ Function New-SerialPort {
         [ValidateRange(1,100000)]
         [System.Int32]$ReadTimeout = 10000,
 
-        # Filter by FriendlyName. This uses a dynamic class to fetch all currently valid names. If one is not plugged in it will not show.
+        # Filter by Name. This uses a dynamic class to fetch all currently valid names. If one is not plugged in it will not show.
         [Parameter()]
-        [ValidateSet([ValidDynamicFriendlyNames])]
-        [System.String]$FriendlyName,
+        [ValidateSet([ValidDynamicNames])]
+        [System.String]$Name,
 
         # Filter by Service. This uses a dynamic class to fetch all currently valid services. If one is not plugged in it will not show.
         [Parameter()]
@@ -85,29 +85,20 @@ Function New-SerialPort {
 
         If ($PortName -Eq '') {
 
-            $Ports = (Get-PnPDevice).Where({$_.Class -Eq 'Ports' -And $_.Present -Eq $True -And $_.Status -Eq 'OK'})
+            $Ports = (Get-CimInstance -ClassName Win32_PnPEntity -Filter "PnPClass = 'Ports'")
+            #$Ports = (Get-PnPDevice).Where({$_.Class -Eq 'Ports' -And $_.Present -Eq $True -And $_.Status -Eq 'OK'})
             If ($Service -NE '' -And $Ports.Length -GT 1) {$Ports = $Ports.Where({$_.Service -Eq $Service})}
-            If ($FriendlyName -NE '' -And $Ports.Length -GT 1) {
-                $Ports = $Ports.Where({$_.FriendlyName -Match $FriendlyName})
-            }
+            If ($Name -NE '' -And $Ports.Length -GT 1) {$Ports = $Ports.Where({$_.Name -Match $Name})}
             If ($Ports.Length -GT 1) {Throw 'More than one port has been caught by the selected filters'}
-            $PortName = ([RegEx]'\((COM\d+)\)').Match($Ports.FriendlyName).Groups[1].Value
+            $PortName = ([RegEx]'\((COM\d+)\)').Match($Ports.Name).Groups[1].Value
 
         }
 
-        $Port = New-Object -TypeName System.IO.Ports.SerialPort -Property @{
-
-            PortName = $PortName
-            BaudRate = $BaudRate
-            Parity = $Parity
-            DataBits = $DataBits
-            StopBits = $StopBits
-            NewLine = $NewLine
-            ReadTimeout = $ReadTimeout
-            DtrEnable = If ($DtrEnable.IsPresent) {$True} Else {$False}
-            RtsEnable = If ($RtsEnable.IsPresent) {$True} Else {$False}
-
-        }
+        $Port = [System.IO.Ports.SerialPort]::New($PortName,$BaudRate,$Parity,$DataBits,$StopBits)
+        $Port.NewLine = $NewLine
+        $Port.ReadTimeout = $ReadTimeout
+        If ($DtrEnable.IsPresent) {$Port.DtrEnable = $True}
+        If ($RtsEnable.IsPresent) {$Port.RtsEnable = $True}
 
         Write-Output -InputObject $Port
 
@@ -126,7 +117,7 @@ Function New-SerialPort {
 
     .Example
     # Unknown PortName or moving target, this will take longer to run as it has to search Get-PnPDevice
-    $Port = New-SerialPort -FriendlyName 'USB Serial Device' -Service usbser
+    $Port = New-SerialPort -Name 'USB Serial Device' -Service usbser
     #>
 
 }
