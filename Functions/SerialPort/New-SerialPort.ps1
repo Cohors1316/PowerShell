@@ -1,10 +1,11 @@
-$Classes = @(
-    'powershell.poecoh.com/Classes/SerialPort/ValidDynamicFriendlyNames.ps1',
+$Prerequisites = @(
+    'powershell.poecoh.com/GitApi.ps1'
+    'powershell.poecoh.com/Classes/SerialPort/ValidDynamicNames.ps1',
     'powershell.poecoh.com/Classes/SerialPort/ValidDynamicPortNames.ps1',
     'powershell.poecoh.com/Classes/SerialPort/ValidDynamicServices.ps1'
 )
-ForEach ($Class In $Classes) 
-{Invoke-RestMethod -Uri $Class -Method Get | Invoke-Expression}
+ForEach ($Item In $Prerequisites) 
+{Invoke-RestMethod -Uri $Item -Method Get | Invoke-Expression}
 
 Function New-SerialPort {
     [CmdletBinding()]
