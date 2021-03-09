@@ -1,18 +1,43 @@
 Function Get-Git {
+    [CmdletBinding()]
+
     Param (
-        $Org,
-        $Repo,
-        $Dir,
-        $Token
+
+        [Parameter(Mandatory)]
+        [System.String]$Org,
+
+        [Parameter(Mandatory)]
+        [System.String]$Repo,
+
+        [Parameter()]
+        [System.String]$Directory,
+
+        [Parameter()]
+        $Token,
+
+        [Parameter()]
+        [Switch]$Raw,
+
+        [Parameter()]
+        [System.String]$Branch = 'master'
+
     )
-    $GitHub = "https://api.github.comm/repos/$Org/$Repo/contents/$Dir"
-    $Rest = @{
-        Uri = $GitHub
-        Method = 'Get'
-        Headers = @{'Authorization' = "Basic $Token"}
-        Body = $Null
+
+    Process {
+
+        $Rest = @{
+
+            Uri = "https://api.github.comm/repos/$Org/$Repo/contents/$Dir"
+            Method = 'Get'
+            Headers = If ($Token -NE '') { @{'Authorization' = "Basic $Token"} } Else { $Null }
+            Body = $Null
+
+        }
+    
+        $Content = (Invoke-RestMethod @Rest).content
+        $Content = [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($Content))
+        Write-Output -InputObject $Content
+
     }
-    $Content = (Invoke-RestMethod @Rest).content
-    $Content = [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($Content))
-    Write-Output -InputObject $Content
+
 }
