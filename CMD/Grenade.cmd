@@ -1,5 +1,4 @@
 @Echo Off
-
 Rem This will execute only one ps1 file located in the same directory,
 Rem usefull for letting people execute ps1s without configuring anything.
 Rem So named because while it can be extremely useful, it can also be extremely dangerous.
