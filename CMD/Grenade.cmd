@@ -7,4 +7,4 @@ REM I thought about making it execute every ps1, but that could get very dangero
 
 For /f %%i In ('Dir /b *.ps1') Do Set Var=%%i
 
-PowerShell -ExecutionPolicy Bypass -NoProfile -File %Var%
+PowerShell -ExecutionPolicy Bypass -NoProfile -File ""%Var%""
